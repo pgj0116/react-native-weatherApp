@@ -25,6 +25,11 @@ export default function App() {
   const [city, setCity] = useState("Loading...");
   const [ok, setOk] = useState(true);
   const [days, setDays] = useState([]);
+  let today = new Date();
+  today = today.toISOString().split("T")[0];
+  const month = today.split("-")[1];
+  const date = today.split("-")[2];
+  console.log(today);
   const getWeather = async () => {
     const { granted } = await Location.requestForegroundPermissionsAsync();
     if (!granted) {
@@ -66,25 +71,19 @@ export default function App() {
         ) : (
           days.map((day, index) => (
             <View key={index} style={styles.day}>
-              <View
-                style={{
-                  flexDirection: "row",
-                  alignItems: "center",
-                  justifyContent: "space-between",
-                }}
-              >
-                <Text style={styles.temp}>
-                  {parseFloat(day.temp.day).toFixed(1)}
-                </Text>
-                <Fontisto
-                  name={icons[day.weather[0].main]}
-                  size={24}
-                  color="white"
-                  size={68}
-                />
-              </View>
+              <Text style={styles.description}>{`${month}-${
+                Number(date) + index
+              }`}</Text>
+              <Text style={styles.temp}>
+                {parseFloat(day.temp.day).toFixed(1)}
+              </Text>
 
-              <Text style={styles.description}>{day.weather[0].main}</Text>
+              <Fontisto
+                name={icons[day.weather[0].main]}
+                size={24}
+                color="white"
+                size={68}
+              />
               <Text style={styles.tinyText}>{day.weather[0].description}</Text>
             </View>
           ))
